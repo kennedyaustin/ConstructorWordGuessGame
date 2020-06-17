@@ -5,7 +5,19 @@ var inquirer= require('inquirer')
 // My array of words to choose from
 const myArrayForNow= ['boom','cat']
 
+// These three lines will choose a random word for the user to guess form the array above
+let randomWordGen= Math.floor(Math.random() * myArrayForNow.length)
+let randomWordChosen= myArrayForNow[randomWordGen]
+let chosenWord= new Word(randomWordChosen)
+
+// These two empty arrays will hold the letters that the user inputs
+let correctGuessedLetters= []
+let incorrectGuessedLetters= []
+// This will be used to help denote the end of the game
+let requireWordEnd= false
+
 function game() {
+
 
 
 
