@@ -3,9 +3,9 @@
 const Word = require('./Word.js')
 const inquirer = require('inquirer')
 
-// Array of the alternative rock artists for the random word generator to choose from
-const artistArray = [
-  'Nickelback', 'Simple Plan'
+// Array of the different minerals for the random word generator to choose from
+const mineralArray = [
+  'ruby', 'sapphire', 'diamond', 'quartz', 'coal', 'amber', 'copper', 'pyrite', 'fluorite'
 ];
 
 // Setting global variables for later use in functions below
@@ -15,13 +15,13 @@ let randomWordChosen
 let remainingGuesses
 let usableCharacters= 'abcdefghijklmnopqrstuvwxyz'
 
-// This function will choose a random artist from the artist array and use that as the next 
+// This function will choose a random mineral from the mineral array and use that as the next 
 // word for the player to guess the letters of
 function randomWordGen() {
 
-    // These 2 variables below are what are used to make and choose the random artist
-    let randomWordGenerator = Math.floor(Math.random() * artistArray.length)
-    let randomWordChosen = artistArray[randomWordGenerator]
+    // These 2 variables below are what are used to make and choose the random mineral
+    let randomWordGenerator = Math.floor(Math.random() * mineralArray.length)
+    let randomWordChosen = mineralArray[randomWordGenerator]
     if (usedWords.indexOf(randomWordChosen) === -1) {
 
       usedWords.push(randomWordChosen)
@@ -37,28 +37,29 @@ function randomWordGen() {
 // This function will take care of everything that has to do with the user making a guess at the random word generated
 function userGuess() {
 
-    // Holds the _
-    let letterChecker = [];
+    let letterChecker = []
     inquirer
      .prompt([
       {
         type: 'input',
         name: 'guessedLetter',
         message: '\nRemaining Guesses: ' + remainingGuesses +
-                 '\nGuess a letter A-Z!\n' +
+                 '\nGuess a letter a-z!\n' +
                  currentGuessingWord.showLetters()  
       }
     ])
     .then(answers => {
-        
+    
         // This will force the user to only type characters a-z and keep them from using more than 
         // 1 character in their answers
-        if (!usableCharacters.includes(answers.guessedLetter) || answers.guessedLetter.length > 1) {
+        if (!usableCharacters.includes(answers.guessedLetter) || answers.guessedLetter.length > 1 ) {
             remainingGuesses++
-            console.log('\nPlease only input one character A-Z!\n')
-        }
+            console.log('\nPlease only input one character a-z!\n')
+        } else if (answers.guessedLetter < 1) {
+            remainingGuesses++
+            console.log('\nPlease type in at least one letter a-z!\n')
+        } 
         currentGuessingWord.lettersOfWord.forEach(letter => {
-  
         // For each letter input by the user it will be put through the checkletter function from the letter.js file
         // to see if the letter is part of the word
         letter.checkLetter(answers.guessedLetter)
@@ -67,14 +68,14 @@ function userGuess() {
   
         });
           
-
-        if (remainingGuesses > 0 && letterChecker.indexOf('_') !== -1) {
+        // If the remaining guesses the user has is > 0 and the number of _ is greater than -1 the game will continue
+        if (remainingGuesses > 0 && letterChecker.indexOf('_') > -1) {
   
             remainingGuesses--
-  
+            // Decrease guesses until the number reaches 0 and then shows a game over log for the user
             if (remainingGuesses === 0) {
   
-                console.log('YOU RAN OUT OF GUESSES! GAME OVER.')
+                console.log('Aw man, you ran out of guesses! Game over!')
                 restartGame()
   
             } else {
@@ -85,7 +86,7 @@ function userGuess() {
   
         } else {
   
-            console.log('\nCongrats! You guessed one of the artists correctly, get ready for the next one!\n')
+            console.log('\nCongrats! You guessed one of the minerals! correctly, get ready for the next one!\n')
             console.log(currentGuessingWord.showLetters() + '\n')
             playGame()
   
@@ -97,21 +98,21 @@ function userGuess() {
 function playGame() {
 
     // These are empty so that the funciton can generate words to put into them, so later on they can be used to end the game
-    // Max of 10 guesses per artist
+    // Max of 10 guesses per mineral
     usedWords= []
     randomWordChosen = ''
-    remainingGuesses = 15
-    // As long as the array of usedWords is shorter than the artist array the game will continue to go, choosing a different 
-    // artist each time
-    if (usedWords.length < artistArray.length) {
+    remainingGuesses = 10
+    // As long as the array of usedWords is shorter than the mineral array the game will continue to go, choosing a different 
+    // mineral each time
+    if (usedWords.length < mineralArray.length) {
 
         randomWordChosen = randomWordGen()
 
     } else {
         
-        // If the user guesses all the artists correctly this is where the game will reset itself if the user chooses
+        // If the user guesses all the minerals correctly this is where the game will reset itself if the user chooses
         // to do so
-        console.log('\nYou\'ve guessed all of the artists names correctly, congratulations!\n')
+        console.log('\nYou\'ve guessed all of the minerals correctly, congratulations!\n')
         restartGame()
 
     }
@@ -127,7 +128,7 @@ function playGame() {
 }
 
 // This function will restart the game after either the player fails to guess one of the words correctly
-// or they are able to guess all of the artists correctly
+// or they are able to guess all of the minerals correctly
 function restartGame() {
 
     inquirer
