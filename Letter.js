@@ -1,9 +1,9 @@
 const Letter= function (letter) {
 
     // Letter input by user
-    this.letter= letter,
+    this.letter= letter
     // Tells whether or not the user has made a guess
-    this.guessed= false,
+    this.guessed= false
     // The function below will look for user input and when they do guess a letter
     // the boolean value of the 'guessed' will be true
     this.checkGuess= function(guess) {
@@ -27,7 +27,7 @@ const Letter= function (letter) {
 
 }
 
-const blue= new Letter('a')
-console.log(blue)
+// const blue= new Letter('a')
+// console.log(blue)
 
 module.exports= Letter
