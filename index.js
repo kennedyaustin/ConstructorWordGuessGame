@@ -22,11 +22,13 @@ function randomWordGen() {
     // These 2 variables below are what are used to make and choose the random mineral
     let randomWordGenerator = Math.floor(Math.random() * mineralArray.length)
     let randomWordChosen = mineralArray[randomWordGenerator]
+    // If the index doesn't exist to begin with then push a newly generated word into the array
     if (usedWords.indexOf(randomWordChosen) === -1) {
 
       usedWords.push(randomWordChosen)
       return randomWordChosen
 
+    // Otherwise gen a new word
     } else {
 
       return randomWordGen()
@@ -78,12 +80,15 @@ function userGuess() {
                 console.log('Aw man, you ran out of guesses! Game over!')
                 restartGame()
   
+            // Otherwise allow the user to keep guessing
             } else {
             
                 userGuess()
   
             }
-  
+            
+        // When all the _ are gone the user will be shown the congratulatory text and be given the next
+        // prompt
         } else {
   
             console.log('\nCongrats! You guessed one of the minerals! correctly, get ready for the next one!\n')
